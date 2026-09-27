@@ -1,0 +1,38 @@
+* {
+    font-family: "Times New Roman", Times, serif;
+}
+
+body {
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+    text-transform: capitalize;
+}
+
+#outer {
+    font-size: 25px;
+}
+
+#inner {
+    font-size: 10px;
+}
+
+.icons {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.icons i {
+    font-size: 50px;
+    margin: 20px;
+}
+
+.fa-linkedin {
+    color: blue;
+}
+
+.fa-github {
+    color: black;
+}
