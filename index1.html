@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Project - Browser Tools</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            color: #222;
+        }
+
+        .navbar {
+            height: 65px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: cursive;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .search {
+            width: 250px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f5f5f5;
+            outline: none;
+        }
+
+        .icons {
+            display: flex;
+            gap: 20px;
+            font-size: 24px;
+        }
+
+        .container {
+            width: 900px;
+            max-width: 95%;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 600px 280px;
+            gap: 25px;
+        }
+
+        .post {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .post-header {
+            height: 65px;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+        }
+
+        .profile {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(
+                45deg,
+                #feda75,
+                #fa7e1e,
+                #d62976,
+                #962fbf,
+                #4f5bd5
+            );
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .username {
+            font-weight: bold;
+        }
+
+        .location {
+            font-size: 12px;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .dots {
+            margin-left: auto;
+            font-size: 22px;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            background: linear-gradient(
+                135deg,
+                #f6d365,
+                #f08a5d,
+                #c44569,
+                #6a2c70
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-content {
+            width: 70%;
+            height: 55%;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .image-content h1 {
+            margin: 0;
+            font-size: 35px;
+            color: #333;
+        }
+
+        .image-content p {
+            font-size: 20px;
+            color: #777;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 14px 16px 5px;
+        }
+
+        .actions button {
+            border: none;
+            background: none;
+            font-size: 27px;
+            cursor: pointer;
+        }
+
+        .save {
+            margin-left: auto;
+        }
+
+        .liked {
+            color: red;
+        }
+
+        .post-content {
+            padding: 5px 16px 18px;
+        }
+
+        .likes {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .caption {
+            line-height: 1.5;
+        }
+
+        .comments {
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .date {
+            color: #aaa;
+            font-size: 11px;
+            margin-top: 12px;
+        }
+
+
+        .panel {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+        }
+
+        .panel p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .control {
+            margin-top: 20px;
+        }
+
+        .control label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .control input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #0095f6;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #007acb;
+        }
+
+        .dark {
+            background: #333;
+        }
+
+        .dark:hover {
+            background: #111;
+        }
+
+        #message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+            font-size: 13px;
+        }
+
+        .success {
+            display: block !important;
+            background: #e8f8ee;
+            color: green;
+        }
+
+        .error {
+            display: block !important;
+            background: #fdecec;
+            color: red;
+        }
+
+        #source {
+            display: none;
+            background: #111;
+            color: white;
+            padding: 10px;
+            margin-top: 15px;
+            border-radius: 6px;
+            max-height: 200px;
+            overflow: auto;
+            font-size: 11px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+
+      
+        @media(max-width: 800px) {
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .search {
+                display: none;
+            }
+
+            .post-image {
+                height: 500px;
+            }
+
+            .navbar {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Instagram
+        </div>
+
+        <input
+            class="search"
+            type="text"
+            placeholder="Search"
+        >
+
+        <div class="icons">
+            <span>⌂</span>
+            <span>♡</span>
+            <span>◉</span>
+        </div>
+
+    </nav>
+
+    <div class="container">
+
+        <div class="post">
+
+            <div class="post-header">
+
+                <div class="profile">
+                    A
+                </div>
+
+                <div>
+                    <div class="username">
+                        arti_project
+                    </div>
+
+                    <div class="location">
+                        New Delhi, India
+                    </div>
+                </div>
+
+                <div class="dots">
+                    •••
+                </div>
+
+            </div>
+
+
+            <div class="post-image">
+
+                <div class="image-content">
+
+                    <h1>
+                        MY PROJECT
+                    </h1>
+
+                    <p>
+                        Browser Tools
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button id="likeButton">
+                    ♡
+                </button>
+
+                <button>
+                    💬
+                </button>
+
+                <button>
+                    ➤
+                </button>
+
+                <button class="save">
+                    🔖
+                </button>
+
+            </div>
+
+
+            <div class="post-content">
+
+                <div class="likes">
+                    <span id="likeCount">1250</span> likes
+                </div>
+
+                <div class="caption">
+                    <b>arti_project</b>
+                    Learning Browser Developer Tools 🚀
+                </div>
+
+                <div class="comments">
+                    View all 18 comments
+                </div>
+
+                <div class="date">
+                    September 27, 2026
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>
+                Project Level 3
+            </h2>
+
+            <p>
+                Browser Tools practice project.
+            </p>
+
+
+            <div class="control">
+
+                <label>
+                    3. Change number of likes
+                </label>
+
+                <input
+                    type="number"
+                    id="newLikes"
+                    value="1250"
+                    min="0"
+                >
+
+                <button
+                    class="btn"
+                    id="changeLikes"
+                >
+                    Change Likes
+                </button>
+
+            </div>
+
+
+            <div class="control">
+
+                <label>
+                    1. View Source
+                </label>
+
+                <button
+                    class="btn dark"
+                    id="showSource"
+                >
+                    Show Page Source
+                </button>
+
+            </div>
+
+
+            <div class="control">
+
+                <label>
+                    4. Validate Page
+                </label>
+
+                <button
+                    class="btn"
+                    id="validate"
+                >
+                    Validate HTML
+                </button>
+
+            </div>
+
+
+            
+            <div id="message"></div>
+
+
+            
+            <pre id="source"></pre>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+        Project Level 3 • Browser Tools
+    </footer>
+
+
+    <script>
+
+
+        const likeButton =
+            document.getElementById("likeButton");
+
+        const likeCount =
+            document.getElementById("likeCount");
+
+        likeButton.addEventListener("click", function () {
+
+            let liked =
+                likeButton.classList.toggle("liked");
+
+            if (liked) {
+
+                likeButton.innerHTML = "♥";
+
+                likeCount.innerText =
+                    Number(likeCount.innerText) + 1;
+
+            } else {
+
+                likeButton.innerHTML = "♡";
+
+                likeCount.innerText =
+                    Number(likeCount.innerText) - 1;
+            }
+
+        });
+
+
+        document
+            .getElementById("changeLikes")
+            .addEventListener("click", function () {
+
+                let value =
+                    Number(
+                        document.getElementById("newLikes").value
+                    );
+
+                if (value < 0 || !Number.isInteger(value)) {
+
+                    showMessage(
+                        "Please enter a valid number.",
+                        false
+                    );
+
+                    return;
+                }
+
+                likeCount.innerText = value;
+
+                showMessage(
+                    "Likes changed successfully!",
+                    true
+                );
+
+            });
+
+
+
+        document
+            .getElementById("showSource")
+            .addEventListener("click", function () {
+
+                const source =
+                    document.getElementById("source");
+
+                if (source.style.display === "block") {
+
+                    source.style.display = "none";
+
+                } else {
+
+                    source.style.display = "block";
+
+                    source.innerText =
+                        document.documentElement.outerHTML;
+                }
+
+            });
+
+
+
+        document
+            .getElementById("validate")
+            .addEventListener("click", function () {
+
+                const requiredElements = [
+
+                    "likeButton",
+                    "likeCount",
+                    "newLikes",
+                    "changeLikes",
+                    "showSource",
+                    "validate"
+
+                ];
+
+                let missing = [];
+
+                requiredElements.forEach(function (id) {
+
+                    if (!document.getElementById(id)) {
+                        missing.push(id);
+                    }
+
+                });
+
+
+                if (missing.length > 0) {
+
+                    showMessage(
+                        "Validation failed. Missing: " +
+                        missing.join(", "),
+                        false
+                    );
+
+                } else {
+
+                    showMessage(
+                        "✓ Page validated successfully!",
+                        true
+                    );
+
+                }
+
+            });
+
+
+        function showMessage(text, success) {
+
+            const message =
+                document.getElementById("message");
+
+            message.innerText = text;
+
+            if (success) {
+
+                message.className = "success";
+
+            } else {
+
+                message.className = "error";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
